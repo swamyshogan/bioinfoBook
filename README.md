@@ -71,12 +71,13 @@ Private cheats live in `~/.config/bioinfobook/private/<category>.json` and show 
 
 | Tool | Cheats | What's covered | Homepage |
 |---|---:|---|---|
+| [conda](db/conda.json) | 38 | Environments for bioinformatics tools — create, activate, Bioconda channels, sharing environment.yml, mamba, Apple Silicon and HPC tips | [link](https://docs.conda.io/) |
 | [git](db/git.json) | 58 | Version control for analysis code — everyday git, branches, undoing mistakes, and the GitHub CLI | [link](https://git-scm.com/) |
 | [hpc](db/hpc.json) | 39 | Running jobs on a Slurm cluster — login, transfers, sbatch / srun, job templates, modules, conda, GPUs, Jupyter | [link](https://slurm.schedmd.com/) |
 | [terminal](db/terminal.json) | 84 | Unix one-liners for bioinformatics — FASTQ / FASTA parsing, sequence search, awk / grep / sed, SAM, VCF, BED, GTF | — |
 | [tmux](db/tmux.json) | 49 | Keep long analyses running after you disconnect — sessions, windows, panes, copy mode, config | [link](https://github.com/tmux/tmux/wiki) |
 
-**230 cheats across 4 tools.** Regenerate this table with `bioinfobook tools --markdown`.
+**268 cheats across 5 tools.** Regenerate this table with `bioinfobook tools --markdown`.
 
 ## Contributing
 
