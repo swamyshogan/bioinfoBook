@@ -1,0 +1,55 @@
+name: Add a missing command
+description: A tool is already in bioterminal, but a command you use isn't there yet.
+title: "[tool] add: "
+labels: ["new command"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping! One command per issue keeps things easy to review.
+        Tip: `bioterminal share <id>` fills this form in from one of your private cheats.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: Which cheat sheet it belongs to (the file name in db/, e.g. samtools, chimerax, hpc).
+      placeholder: samtools
+    validations:
+      required: true
+  - type: input
+    id: description
+    attributes:
+      label: What does it do?
+      description: A short title people will search for. Under 80 characters.
+      placeholder: Count mapped reads in a BAM
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: Use {{name}} for blanks the user fills in, or {{name:default}} with a default.
+      placeholder: samtools view -c -F 4 {{file.bam}}
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      description: Gotchas, what the flags mean, macOS vs Linux differences…
+  - type: textarea
+    id: json
+    attributes:
+      label: JSON line (optional)
+      description: If you have it, the ready-to-paste line for the db file.
+      render: json
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've run this command myself and it works
+          required: true
+        - label: It contains no usernames, hostnames, passwords or private paths
+          required: true
