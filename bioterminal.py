@@ -1218,7 +1218,7 @@ class Picker:
             xx += tagw + 1
             right = x0 + w - 1
             span = right - xx
-            tw = max(8, min(int(span * 0.45), 46))
+            tw = max(8, min(int(span * 0.52), 48))
             title = trunc(one_line(it["title"]), tw)
             hl = highlight_positions(title, tokens)
             base = mix(C["subtext0"], C["text"], glow)
@@ -1350,32 +1350,35 @@ class Picker:
 
     def draw_fill(self, cv, W, H, now):
         f = self.fill
-        bw = min(W - 6, 76)
-        cmd_lines = []
-        vals = dict(f["values"])
+        bw = min(W - 6, 84)
         name_now = f["vars"][f["i"]][0]
-        vals_view = {**vals, name_now: f["text"] or "▁"}
-        preview = fill_placeholders(f["item"]["cmd"], {k: "\x00" + v + "\x01" for k, v in vals_view.items()})
-        for line in preview.split("\n")[:5]:
-            cmd_lines.append(trunc(line.replace("\t", "    "), bw * 3))
-        bh = 7 + min(len(cmd_lines), 5)
+        # filled blanks show green, the one being typed shows peach; long commands wrap
+        marks = {k: "\x00" + v + "\x01" for k, v in f["values"].items()}
+        marks[name_now] = "\x02" + (f["text"] or "▁") + "\x01"
+        preview = fill_placeholders(f["item"]["cmd"], marks)
+        cmd_lines = []
+        for line in preview.replace("\t", "    ").split("\n"):
+            chars, style = [], None
+            for ch in line:
+                if ch in "\x00\x02":
+                    style = "done" if ch == "\x00" else "now"
+                elif ch == "\x01":
+                    style = None
+                elif wcw(ch):
+                    chars.append((ch, style))
+            cmd_lines.extend(wrap_chars(chars, bw - 6) or [[]])
+        if len(cmd_lines) > 6:
+            cmd_lines = cmd_lines[:5] + [[("…", None)]]
+        bh = 7 + len(cmd_lines)
         bx, by = (W - bw) // 2, (H - bh) // 2
         draw_box(cv, bx, by, bw, bh, grad=[C["peach"], C["pink"], C["mauve"]], bg=C["mantle"])
         cv.put(bx + 2, by, " fill in the blanks ", C["peach"], C["mantle"], True)
         y = by + 2
-        for line in cmd_lines:
-            xx, inval = bx + 3, False
-            for ch in line:
-                if ch == "\x00":
-                    inval = True
-                    continue
-                if ch == "\x01":
-                    inval = False
-                    continue
-                if xx >= bx + bw - 3:
-                    break
-                col = C["green"] if inval else C["subtext0"]
-                xx = cv.put(xx, y, ch, col, C["mantle"], inval)
+        for chars in cmd_lines:
+            xx = bx + 3
+            for ch, style in chars:
+                col = C["green"] if style == "done" else C["peach"] if style == "now" else C["subtext0"]
+                xx = cv.put(xx, y, ch, col, C["mantle"], style is not None)
             y += 1
         y += 1
         pulse = 0.5 + 0.5 * math.sin(now * 6)
