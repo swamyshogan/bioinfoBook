@@ -45,7 +45,7 @@ This links `bioinfobook` into `~/.local/bin` and prints the optional tmux lines.
 bioinfobook                    # open the picker
 bioinfobook samtools sort      # open it already searching
 bioinfobook tools              # list every cheat sheet
-bioinfobook ls --tool chimerax # print a whole sheet
+bioinfobook ls --tool terminal # print a whole sheet
 bioinfobook cp terminal-47     # copy one by its id
 ```
 
@@ -71,13 +71,12 @@ Private cheats live in `~/.config/bioinfobook/private/<category>.json` and show 
 
 | Tool | Cheats | What's covered | Homepage |
 |---|---:|---|---|
-| [chimerax](db/chimerax.json) | 66 | Molecular visualization — open structures, style, colour, select, measure, superimpose, maps, figures and movies | [link](https://www.cgl.ucsf.edu/chimerax/) |
 | [git](db/git.json) | 58 | Version control for analysis code — everyday git, branches, undoing mistakes, and the GitHub CLI | [link](https://git-scm.com/) |
 | [hpc](db/hpc.json) | 39 | Running jobs on a Slurm cluster — login, transfers, sbatch / srun, job templates, modules, conda, GPUs, Jupyter | [link](https://slurm.schedmd.com/) |
 | [terminal](db/terminal.json) | 84 | Unix one-liners for bioinformatics — FASTQ / FASTA parsing, sequence search, awk / grep / sed, SAM, VCF, BED, GTF | — |
 | [tmux](db/tmux.json) | 49 | Keep long analyses running after you disconnect — sessions, windows, panes, copy mode, config | [link](https://github.com/tmux/tmux/wiki) |
 
-**296 cheats across 5 tools.** Regenerate this table with `bioinfobook tools --markdown`.
+**230 cheats across 4 tools.** Regenerate this table with `bioinfobook tools --markdown`.
 
 ## Contributing
 
@@ -87,7 +86,7 @@ bioinfoBook is community-driven: every cheat sheet is a plain JSON file in [`db/
 - **A tool is missing?** Open a [*Request a new tool*](../../issues/new?template=new-tool.yml) issue, or run `bioinfobook suggest <tool>`.
 - **Want to write it yourself?** Add or edit `db/<tool>.json`, run `python3 bioinfobook.py validate`, and open a pull request.
 
-The file format and house rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Wanted next: samtools, bcftools, bedtools, seqkit, BLAST, minimap2 / bwa, STAR / salmon, GATK, Nextflow / Snakemake, conda / mamba, PyMOL, R / Bioconductor one-liners.
+The file format and house rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Wanted next: samtools, bcftools, bedtools, seqkit, BLAST, minimap2 / bwa, STAR / salmon, GATK, Nextflow / Snakemake, conda / mamba, R / Bioconductor one-liners.
 
 ## Settings
 

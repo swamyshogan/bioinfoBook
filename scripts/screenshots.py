@@ -37,7 +37,7 @@ SCENES = {
              ["pull out reads sequence", 0.5, ("key", "Enter"), 0.3, ("key", "C-u"), "sample_R1.fastq.gz",
               ("key", "Enter"), 0.2, "AGATCGGAAG", 0.6], ["wide"]),
     "copied": ("Enter copies it. Ctrl+T types it into your prompt.",
-               ["color alphafold", 0.6, ("key", "Enter"), 0.17], ["wide"]),
+               ["reverse complement", 0.5, ("key", "Enter"), 0.3, "GATTACA", ("key", "Enter"), 0.17], ["wide"]),
 }
 FORMATS = {"wide": (1600, 900, 14.0), "square": (1080, 1080, 11.9)}
 

@@ -12,7 +12,7 @@ body:
     id: tool
     attributes:
       label: Tool
-      description: Which cheat sheet it belongs to (the file name in db/, e.g. samtools, chimerax, hpc).
+      description: Which cheat sheet it belongs to (the file name in db/, e.g. samtools, terminal, hpc).
       placeholder: samtools
     validations:
       required: true
