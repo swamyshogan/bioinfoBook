@@ -1,4 +1,4 @@
-# bioterminal ✦
+# bioinfoBook ✦
 
 **Bioinformatics cheat sheets in your terminal: animated, colourful, and written by the community.**
 
@@ -6,22 +6,18 @@ Stop digging through old notebooks and Stack Overflow tabs for that one `awk` li
 
 <sub>Ideation by **Shogan** · Executed by **Claude**</sub>
 
-```
-   █▄▄ █ █▀█ ▀█▀ █▀▀ █▀█ █▀▄▀█ █ █▄ █ ▄▀█ █     bioinformatics cheat sheets in your terminal
-   █▄█ █ █▄█  █  ██▄ █▀▄ █ ▀ █ █ █ ▀█ █▀█ █▄▄   ✦ 296 cheats · 5 tools
+![bioinfoBook searching for FASTQ one-liners](assets/bioinfobook-search-wide.png)
 
-  ╭──────────────────────────────────────────────────────────────────────────────────────────╮
-  │ ❯ fastq seq▌                                                                       5/296 │
-  ╰──────────────────────────────────────────────────────────────────────────────────────────╯
-  ╭─ 5 matches ──────────────────────────────────────╮ ╭─ preview ───────────────────────────╮
-  │▌  terminal  Print only the sequences…  gzip -cd… │ │ Print only the sequences (every 4th │
-  │   terminal  Count reads containing a…  gzip -cd… │ │ line from line 2)                   │
-  │   terminal  Count a sequence on both…  s={{seq…  │ │                                     │
-  │   terminal  Pull out whole reads con…  gzip -cd… │ │ ▎ gzip -cd {{reads.fastq.gz}} |     │
-  │   terminal  Quick stats for FASTA/FA…  seqkit s… │ │ ▎   awk 'NR % 4 == 2'               │
-  ╰──────────────────────────────────────────────────╯ ╰─────────────────────────────────────╯
-    ⏎  copy   ^T  type   ^A  add   ^E  edit   ^D  delete   esc  quit
-```
+<table>
+  <tr>
+    <td><img src="assets/bioinfobook-fill-wide.png" alt="Filling in the blanks before copying"></td>
+    <td><img src="assets/bioinfobook-copied-wide.png" alt="Copied to clipboard"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Fill in the blanks</sub></td>
+    <td align="center"><sub>Copied, with a little sparkle</sub></td>
+  </tr>
+</table>
 
 ## Features
 
@@ -36,21 +32,21 @@ Stop digging through old notebooks and Stack Overflow tabs for that one `awk` li
 ## Install
 
 ```bash
-git clone https://github.com/swamyshogan/bioterminal.git
-cd bioterminal
+git clone https://github.com/swamyshogan/bioinfoBook.git
+cd bioinfoBook
 ./install.sh
 ```
 
-This links `bioterminal` into `~/.local/bin` and prints the optional tmux lines. To uninstall, delete `~/.local/bin/bioterminal`.
+This links `bioinfobook` into `~/.local/bin` and prints the optional tmux lines. To uninstall, delete `~/.local/bin/bioinfobook`.
 
 ## Usage
 
 ```bash
-bioterminal                    # open the picker
-bioterminal samtools sort      # open it already searching
-bioterminal tools              # list every cheat sheet
-bioterminal ls --tool chimerax # print a whole sheet
-bioterminal cp terminal-47     # copy one by its id
+bioinfobook                    # open the picker
+bioinfobook samtools sort      # open it already searching
+bioinfobook tools              # list every cheat sheet
+bioinfobook ls --tool chimerax # print a whole sheet
+bioinfobook cp terminal-47     # copy one by its id
 ```
 
 | key | in the picker |
@@ -64,12 +60,12 @@ bioterminal cp terminal-47     # copy one by its id
 ### Private cheats
 
 ```bash
-bioterminal add 'ssh me@login.my-cluster.edu' -d "Log in to the cluster" -c hpc
-bioterminal add -l -c rnaseq          # save the last command you ran
-bioterminal add                       # asks for command, description and category
+bioinfobook add 'ssh me@login.my-cluster.edu' -d "Log in to the cluster" -c hpc
+bioinfobook add -l -c rnaseq          # save the last command you ran
+bioinfobook add                       # asks for command, description and category
 ```
 
-Private cheats live in `~/.config/bioterminal/private/<category>.json` and show up in search next to the community ones, marked with `◆`. Search `#my` to see only yours. If one would help others, `bioterminal share <id>` opens a pre-filled suggestion. It reminds you to strip anything personal first.
+Private cheats live in `~/.config/bioinfobook/private/<category>.json` and show up in search next to the community ones, marked with `◆`. Search `#my` to see only yours. If one would help others, `bioinfobook share <id>` opens a pre-filled suggestion. It reminds you to strip anything personal first.
 
 ## Available cheat sheets
 
@@ -81,15 +77,15 @@ Private cheats live in `~/.config/bioterminal/private/<category>.json` and show 
 | [terminal](db/terminal.json) | 84 | Unix one-liners for bioinformatics — FASTQ / FASTA parsing, sequence search, awk / grep / sed, SAM, VCF, BED, GTF | — |
 | [tmux](db/tmux.json) | 49 | Keep long analyses running after you disconnect — sessions, windows, panes, copy mode, config | [link](https://github.com/tmux/tmux/wiki) |
 
-**296 cheats across 5 tools.** Regenerate this table with `bioterminal tools --markdown`.
+**296 cheats across 5 tools.** Regenerate this table with `bioinfobook tools --markdown`.
 
 ## Contributing
 
-bioterminal is community-driven: every cheat sheet is a plain JSON file in [`db/`](db/), one per tool.
+bioinfoBook is community-driven: every cheat sheet is a plain JSON file in [`db/`](db/), one per tool.
 
-- **A command is missing from a tool?** Open an [*Add a missing command*](../../issues/new?template=add-command.yml) issue, or run `bioterminal suggest <tool>`.
-- **A tool is missing?** Open a [*Request a new tool*](../../issues/new?template=new-tool.yml) issue, or run `bioterminal suggest <tool>`.
-- **Want to write it yourself?** Add or edit `db/<tool>.json`, run `python3 bioterminal.py validate`, and open a pull request.
+- **A command is missing from a tool?** Open an [*Add a missing command*](../../issues/new?template=add-command.yml) issue, or run `bioinfobook suggest <tool>`.
+- **A tool is missing?** Open a [*Request a new tool*](../../issues/new?template=new-tool.yml) issue, or run `bioinfobook suggest <tool>`.
+- **Want to write it yourself?** Add or edit `db/<tool>.json`, run `python3 bioinfobook.py validate`, and open a pull request.
 
 The file format and house rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Wanted next: samtools, bcftools, bedtools, seqkit, BLAST, minimap2 / bwa, STAR / salmon, GATK, Nextflow / Snakemake, conda / mamba, PyMOL, R / Bioconductor one-liners.
 
@@ -97,11 +93,13 @@ The file format and house rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Wante
 
 | environment variable | default | what it does |
 |---|---|---|
-| `BIOTERMINAL_HOME` | `~/.config/bioterminal` | where private cheats and usage counts live |
-| `BIOTERMINAL_DB` | `db/` next to the script | use a different cheat-sheet folder |
-| `BIOTERMINAL_NO_ANIM` | unset | `1` turns animations off |
-| `BIOTERMINAL_COLOR` | auto | `256` forces 256-colour mode, `truecolor` forces 24-bit |
-| `BIOTERMINAL_REPO` | set in the script | the GitHub repo that `suggest` and `share` open issues on |
+| `BIOINFOBOOK_HOME` | `~/.config/bioinfobook` | where private cheats and usage counts live |
+| `BIOINFOBOOK_DB` | `db/` next to the script | use a different cheat-sheet folder |
+| `BIOINFOBOOK_NO_ANIM` | unset | `1` turns animations off |
+| `BIOINFOBOOK_COLOR` | auto | `256` forces 256-colour mode, `truecolor` forces 24-bit |
+| `BIOINFOBOOK_REPO` | set in the script | the GitHub repo that `suggest` and `share` open issues on |
+
+The screenshots in `assets/` are made by `python3 scripts/screenshots.py` (needs tmux and Google Chrome), so they can be regenerated whenever the cheat sheets grow.
 
 ## License
 

@@ -1,5 +1,5 @@
 name: Request a new tool
-description: Ask for a cheat sheet for a bioinformatics tool that isn't in bioterminal yet.
+description: Ask for a cheat sheet for a bioinformatics tool that isn't in bioinfoBook yet.
 title: "New tool: "
 labels: ["new tool"]
 body:

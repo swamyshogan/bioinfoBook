@@ -1,5 +1,5 @@
 name: Add a missing command
-description: A tool is already in bioterminal, but a command you use isn't there yet.
+description: A tool is already in bioinfoBook, but a command you use isn't there yet.
 title: "[tool] add: "
 labels: ["new command"]
 body:
@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for helping! One command per issue keeps things easy to review.
-        Tip: `bioterminal share <id>` fills this form in from one of your private cheats.
+        Tip: `bioinfobook share <id>` fills this form in from one of your private cheats.
   - type: input
     id: tool
     attributes:

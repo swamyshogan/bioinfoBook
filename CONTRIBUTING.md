@@ -1,21 +1,21 @@
-# Contributing to bioterminal
+# Contributing to bioinfoBook
 
-bioterminal is only as good as its cheat sheets, and those come from people who use these tools every day. There are three ways to help, from easiest to most involved.
+bioinfoBook is only as good as its cheat sheets, and those come from people who use these tools every day. There are three ways to help, from easiest to most involved.
 
 ## 1. A command is missing → open an issue
 
-If a tool is already in bioterminal but a command you use isn't, open an **Add a missing command** issue. You can do it from the terminal:
+If a tool is already in bioinfoBook but a command you use isn't, open an **Add a missing command** issue. You can do it from the terminal:
 
 ```bash
-bioterminal suggest samtools        # opens the issue form for that tool
-bioterminal share my-hpc-3          # turns one of your private cheats into a suggestion
+bioinfobook suggest samtools        # opens the issue form for that tool
+bioinfobook share my-hpc-3          # turns one of your private cheats into a suggestion
 ```
 
 You can also go to the repo's **Issues → New issue → Add a missing command**. Give it the tool, a short description, the command, and any notes. A maintainer or another contributor turns it into a JSON line.
 
 ## 2. A whole tool is missing → request it
 
-Open a **Request a new tool** issue (or run `bioterminal suggest bedtools`) with the commands you'd want in it. Even a rough list helps.
+Open a **Request a new tool** issue (or run `bioinfobook suggest bedtools`) with the commands you'd want in it. Even a rough list helps.
 
 ## 3. Write the JSON yourself → open a pull request
 
@@ -23,9 +23,9 @@ Open a **Request a new tool** issue (or run `bioterminal suggest bedtools`) with
 2. Edit `db/<tool>.json`, or create it for a new tool (template below).
 3. Run the checker:
    ```bash
-   python3 bioterminal.py validate
+   python3 bioinfobook.py validate
    ```
-4. Try your cheats in the picker: `python3 bioterminal.py "#<tool>"`.
+4. Try your cheats in the picker: `python3 bioinfobook.py "#<tool>"`.
 5. Open a pull request. GitHub runs the same checker on it automatically.
 
 ### File format
@@ -58,7 +58,7 @@ One file per tool. The file name must match the `"tool"` field.
 
 ### Blanks
 
-Write `{{name}}` for anything the user has to fill in, or `{{name:default}}` to suggest a default. When someone copies the cheat, bioterminal asks for each blank. The same blank used twice is asked for only once.
+Write `{{name}}` for anything the user has to fill in, or `{{name:default}}` to suggest a default. When someone copies the cheat, bioinfoBook asks for each blank. The same blank used twice is asked for only once.
 
 ```
 samtools sort -@ {{threads:4}} -o {{sorted.bam}} {{in.bam}}

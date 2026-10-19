@@ -14,6 +14,6 @@ jobs:
         with:
           python-version: "3.12"
       - name: Script compiles
-        run: python -m py_compile bioterminal.py
+        run: python -m py_compile bioinfobook.py
       - name: Every db/ file is valid
-        run: NO_COLOR=1 python bioterminal.py validate
+        run: NO_COLOR=1 python bioinfobook.py validate

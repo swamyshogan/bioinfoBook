@@ -51,6 +51,6 @@
     {"title": "Number windows and panes from 1", "cmd": "set -g base-index 1\nsetw -g pane-base-index 1"},
     {"title": "Stop windows renaming themselves", "cmd": "set -g allow-rename off"},
     {"title": "Full 24-bit colour", "cmd": "set -ag terminal-overrides \",*:RGB\""},
-    {"title": "Open bioterminal as a popup on prefix C", "cmd": "bind C display-popup -E -w 85% -h 80% -b rounded \"bioterminal --pane '#{pane_id}'\""}
+    {"title": "Open bioinfoBook as a popup on prefix C", "cmd": "bind C display-popup -E -w 85% -h 80% -b rounded \"bioinfobook --pane '#{pane_id}'\""}
   ]
 }

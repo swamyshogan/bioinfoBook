@@ -4,7 +4,7 @@
 
 ## Checklist
 
-- [ ] `python3 bioterminal.py validate` passes
+- [ ] `python3 bioinfobook.py validate` passes
 - [ ] I've run each command myself
 - [ ] No usernames, hostnames, passwords or private paths
 - [ ] New cheats are added at the **end** of the file (so existing ids don't change)

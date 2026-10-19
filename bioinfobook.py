@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-bioterminal — animated, colourful bioinformatics cheat sheets in your terminal.
+bioinfoBook — animated, colourful bioinformatics cheat sheets in your terminal.
 
 Search as you type, press Enter, and the command is on your clipboard and in
 your tmux buffer.  The cheat sheets are community-written JSON files, one per
 tool, in db/.  Pure Python standard library.
 
-    bioterminal                 open the picker
-    bioterminal samtools sort   open the picker, pre-filtered
-    bioterminal tools           list the available cheat sheets
-    bioterminal help            everything else
+    bioinfobook                 open the picker
+    bioinfobook samtools sort   open the picker, pre-filtered
+    bioinfobook tools           list the available cheat sheets
+    bioinfobook help            everything else
 
 Ideation by Shogan · Executed by Claude
 """
@@ -39,8 +39,8 @@ from functools import lru_cache
 from pathlib import Path
 
 VERSION = "0.1.0"
-# Where people send suggestions. Change this once the repo is on GitHub (or set BIOTERMINAL_REPO).
-REPO = os.environ.get("BIOTERMINAL_REPO") or "swamyshogan/bioterminal"
+# Where people send suggestions. Change this once the repo is on GitHub (or set BIOINFOBOOK_REPO).
+REPO = os.environ.get("BIOINFOBOOK_REPO") or "swamyshogan/bioinfoBook"
 
 # ════════════════════════════════════════════════════════════════════════
 #  Colour — catppuccin mocha
@@ -97,7 +97,7 @@ def tool_color(tool):
 
 
 def _detect_truecolor():
-    v = os.environ.get("BIOTERMINAL_COLOR", "").lower()
+    v = os.environ.get("BIOINFOBOOK_COLOR", "").lower()
     if v in ("truecolor", "24bit", "rgb"):
         return True
     if v in ("256", "8bit"):
@@ -391,11 +391,11 @@ TOOLS = {}      # tool name -> {"path": Path, "meta": {...}} for every loaded fi
 
 def db_dir():
     """The community database: one JSON file per bioinformatics tool."""
-    return Path(os.environ.get("BIOTERMINAL_DB") or HERE / "db").expanduser()
+    return Path(os.environ.get("BIOINFOBOOK_DB") or HERE / "db").expanduser()
 
 
 def config_dir():
-    return Path(os.environ.get("BIOTERMINAL_HOME") or "~/.config/bioterminal").expanduser()
+    return Path(os.environ.get("BIOINFOBOOK_HOME") or "~/.config/bioinfobook").expanduser()
 
 
 def private_dir():
@@ -518,7 +518,7 @@ def find_entry(items, ident):
     for it in items:
         if it["id"] == ident:
             return it
-    err(f"no cheat called {ident} — ids look like samtools-3; see them with `bioterminal ls`")
+    err(f"no cheat called {ident} — ids look like samtools-3; see them with `bioinfobook ls`")
     sys.exit(1)
 
 
@@ -561,8 +561,8 @@ def tmux_type(text, pane=None, delay=0.0):
     the shell is back at its prompt instead of being echoed by the terminal."""
     target = ["-t", pane] if pane else []
     if "\n" in text:  # bracketed paste so the shell doesn't execute each line
-        subprocess.run(["tmux", "load-buffer", "-b", "bioterminal", "-"], input=text.encode(), check=False)
-        send = ["tmux", "paste-buffer", "-p", "-d", "-b", "bioterminal"] + target
+        subprocess.run(["tmux", "load-buffer", "-b", "bioinfobook", "-"], input=text.encode(), check=False)
+        send = ["tmux", "paste-buffer", "-p", "-d", "-b", "bioinfobook"] + target
     else:
         send = ["tmux", "send-keys"] + target + ["-l", text]
     if delay:
@@ -796,10 +796,19 @@ class Term:
 #  The picker
 # ════════════════════════════════════════════════════════════════════════
 
-FONT = {"b": ("█▄▄", "█▄█"), "i": ("█", "█"), "o": ("█▀█", "█▄█"), "t": ("▀█▀", " █ "),
-        "e": ("█▀▀", "██▄"), "r": ("█▀█", "█▀▄"), "m": ("█▀▄▀█", "█ ▀ █"), "n": ("█▄ █", "█ ▀█"),
-        "a": ("▄▀█", "█▀█"), "l": ("█  ", "█▄▄")}
-LOGO = [" ".join(FONT[ch][row] for ch in "bioterminal") for row in (0, 1)]
+FONT = {"b": ("█▄▄", "█▄█"), "i": ("█", "█"), "o": ("█▀█", "█▄█"), "n": ("█▄ █", "█ ▀█"),
+        "f": ("█▀▀", "█▀ "), "k": ("█▄▀", "█ █")}
+LOGO = [" ".join(FONT[ch][row] for ch in "bioinfobook") for row in (0, 1)]
+LOGO_SPLIT = len(" ".join(FONT[ch][0] for ch in "bioinfo")) + 1   # where "book" starts
+LOGO_COOL = [C["mauve"], C["lavender"], C["blue"]]
+LOGO_WARM = [C["pink"], C["flamingo"], C["peach"]]
+
+
+def logo_color(i):
+    """bioinfo in cool colours, book in warm ones."""
+    if i < LOGO_SPLIT:
+        return gradient(LOGO_COOL, i / max(1, LOGO_SPLIT - 2))
+    return gradient(LOGO_WARM, (i - LOGO_SPLIT) / max(1, len(LOGO[0]) - LOGO_SPLIT - 1))
 TAGLINE = "bioinformatics cheat sheets in your terminal"
 SPARK_CHARS = "✦✧⋆*+·•"
 
@@ -1127,7 +1136,7 @@ class Picker:
             for i, ch in enumerate(line):
                 if ch == " " or i > reveal:
                     continue
-                col = gradient(LOGO_GRAD, (i + row * 0.5) / n)
+                col = logo_color(i)
                 edge = clamp(1 - (reveal - i) / 5)
                 col = mix(col, C["rosewater"], edge * 0.9)
                 col = mix(col, (255, 255, 255), math.exp(-((i - sweep) / 2.0) ** 2) * 0.6)
@@ -1256,7 +1265,7 @@ class Picker:
         lines = [
             [("✦  ", "star"), ("nothing saved yet", C["text"]), ("  ✦", "star")],
             [],
-            [("save your own commands   ", C["overlay1"]), ("bioterminal add", C["mauve"])],
+            [("save your own commands   ", C["overlay1"]), ("bioinfobook add", C["mauve"])],
             [],
             [("press ", C["overlay1"]), ("ctrl-a", C["pink"]), (" to add one right now", C["overlay1"])],
         ]
@@ -1477,13 +1486,13 @@ def run_picker(args):
     try:
         term = Term()
     except OSError:
-        err("bioterminal needs an interactive terminal")
+        err("bioinfoBook needs an interactive terminal")
         sys.exit(1)
     pane = args.pane
     if pane and "#{" in pane and in_tmux():  # format wasn't expanded — ask tmux
         pane = subprocess.run(["tmux", "display-message", "-p", "#{pane_id}"],
                               capture_output=True, text=True).stdout.strip() or None
-    anim = not (args.no_anim or os.environ.get("BIOTERMINAL_NO_ANIM"))
+    anim = not (args.no_anim or os.environ.get("BIOINFOBOOK_NO_ANIM"))
     pk = Picker(term, cheats, " ".join(args.query), pane, anim, args.print)
     for s in (signal.SIGTERM, signal.SIGHUP):
         signal.signal(s, lambda *_: sys.exit(1))
@@ -1560,7 +1569,7 @@ FORM_NOTES = "─── notes (optional, below this line) ───"
 
 
 def entry_form(it):
-    return (f"# bioterminal {it.get('id', 'new')} — edit, save and close. Lines starting with # are ignored.\n"
+    return (f"# bioinfoBook {it.get('id', 'new')} — edit, save and close. Lines starting with # are ignored.\n"
             f"title: {it.get('title', '')}\n"
             f"{FORM_CMD}\n{it.get('cmd', '')}\n"
             f"{FORM_NOTES}\n{it.get('notes', '')}\n")
@@ -1587,7 +1596,7 @@ def parse_form(text):
 
 def run_editor(text):
     editor = os.environ.get("VISUAL") or os.environ.get("EDITOR") or ("nano" if shutil.which("nano") else "vi")
-    fd, path = tempfile.mkstemp(suffix=".bioterminal.txt")
+    fd, path = tempfile.mkstemp(suffix=".bioinfobook.txt")
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(text)
@@ -1642,7 +1651,7 @@ def last_history_command():
         cur = None
     for e in reversed(entries):
         e = e.strip()
-        if e and not re.match(r"^(bioterminal|.*/bioterminal(\.py)?)(\s|$)", e):
+        if e and not re.match(r"^(bioinfobook|.*/bioinfobook(\.py)?)(\s|$)", e):
             return e
     return None
 
@@ -1657,7 +1666,7 @@ def interactive_add(cheats, a):
         cmd = last_history_command() or ""
         if not cmd:
             err("couldn't find your last command in shell history")
-            err('tip: bioterminal add "$(fc -ln -1)"')
+            err('tip: bioinfobook add "$(fc -ln -1)"')
             return None
     if a.editor:
         draft = {"cmd": cmd, "title": a.title or "", "notes": a.notes or ""}
@@ -1673,7 +1682,7 @@ def interactive_add(cheats, a):
                   paint(f"  saved in {private_dir()}, never shared", C["overlay0"]))
         if not cmd:
             if not interactive:
-                err("give me a command:  bioterminal add 'samtools flagstat in.bam'")
+                err("give me a command:  bioinfobook add 'samtools flagstat in.bam'")
                 return None
             cmd = ask("command", required=True)
         elif interactive:
@@ -1727,7 +1736,7 @@ def cmd_ls(a):
             print(f"{it['id']}\t{it['label']}{' (private)' if it['private'] else ''}\t{it['title']}\t{one_line(it['cmd'])}")
         return 0
     if not items:
-        print(paint("  nothing found", C["overlay1"]) + ("" if cheats else paint("  — try `bioterminal add`", C["overlay0"])))
+        print(paint("  nothing found", C["overlay1"]) + ("" if cheats else paint("  — try `bioinfobook add`", C["overlay0"])))
         return 0
     for n, it in enumerate(items):
         if n:
@@ -1808,7 +1817,7 @@ def cmd_tools(a):
               paint(meta.get("description", ""), C["subtext0"]))
     shared = sum(counts.get(t, 0) for t in tools)
     print(paint(f"\n  {shared} cheats in {len(tools)} tools", C["overlay1"]) +
-          paint("  ·  missing something? ", C["overlay0"]) + paint("bioterminal suggest <tool>", C["mauve"]))
+          paint("  ·  missing something? ", C["overlay0"]) + paint("bioinfobook suggest <tool>", C["mauve"]))
     if mine:
         print(paint("\n  your private categories", C["text"], True) + paint(f"  {private_dir()}", C["overlay0"]))
         for t in mine:
@@ -1945,16 +1954,16 @@ def cmd_validate(a):
 # ════════════════════════════════════════════════════════════════════════
 
 HELP = [
-    ("bioterminal [search…]", "open the picker (optionally pre-filtered)"),
-    ("bioterminal tools", "list the cheat sheets      --markdown for a README table"),
-    ("bioterminal ls [search]", "print matches              --tool NAME  --plain"),
-    ("bioterminal cp <id>", "copy one by id, e.g. samtools-3"),
-    ("bioterminal add [cmd]", "save a private cheat       -d description  -c category  -n notes  -l last  -e editor"),
-    ("bioterminal edit <id>", "edit in $EDITOR"),
-    ("bioterminal rm <id>", "delete one"),
-    ("bioterminal suggest [tool]", "missing a command? opens a GitHub issue for it"),
-    ("bioterminal share <id>", "suggest one of your private cheats for everyone"),
-    ("bioterminal validate", "check db/ files before opening a pull request"),
+    ("bioinfobook [search…]", "open the picker (optionally pre-filtered)"),
+    ("bioinfobook tools", "list the cheat sheets      --markdown for a README table"),
+    ("bioinfobook ls [search]", "print matches              --tool NAME  --plain"),
+    ("bioinfobook cp <id>", "copy one by id, e.g. samtools-3"),
+    ("bioinfobook add [cmd]", "save a private cheat       -d description  -c category  -n notes  -l last  -e editor"),
+    ("bioinfobook edit <id>", "edit in $EDITOR"),
+    ("bioinfobook rm <id>", "delete one"),
+    ("bioinfobook suggest [tool]", "missing a command? opens a GitHub issue for it"),
+    ("bioinfobook share <id>", "suggest one of your private cheats for everyone"),
+    ("bioinfobook validate", "check db/ files before opening a pull request"),
 ]
 KEYS = [("⏎", "copy to clipboard + tmux buffer"), ("^T", "type it into your prompt"), ("↑↓ ^P ^N", "move"),
         ("^A", "add"), ("^E", "edit"), ("^D", "delete"), ("^U", "clear search"), ("esc", "clear / quit")]
@@ -1963,8 +1972,7 @@ KEYS = [("⏎", "copy to clipboard + tmux buffer"), ("^T", "type it into your pr
 def print_help():
     print()
     for row, line in enumerate(LOGO):
-        print("   " + "".join(paint(ch, gradient(LOGO_GRAD, (i + row * 0.5) / len(line)), True)
-                              for i, ch in enumerate(line)))
+        print("   " + "".join(paint(ch, logo_color(i), True) for i, ch in enumerate(line)))
     print(paint(f"   {TAGLINE} · v{VERSION}", C["overlay1"]))
     print(paint("   ideation by Shogan · executed by Claude\n", C["overlay0"]))
     for cmd, desc in HELP:
@@ -1983,7 +1991,7 @@ def print_help():
 
 
 def build_sub_parsers():
-    p = argparse.ArgumentParser(prog="bioterminal", add_help=False)
+    p = argparse.ArgumentParser(prog="bioinfobook", add_help=False)
     sub = p.add_subparsers(dest="sub")
 
     s = sub.add_parser("add", aliases=["new"])
@@ -2040,13 +2048,13 @@ def main(argv=None):
         print_help()
         return 0
     if argv and argv[0] in ("-V", "--version"):
-        print(f"bioterminal {VERSION}")
+        print(f"bioinfobook {VERSION}")
         return 0
     try:
         if argv and argv[0] in SUBS:
             a = build_sub_parsers().parse_args(argv)
             return a.fn(a) or 0
-        p = argparse.ArgumentParser(prog="bioterminal", add_help=False)
+        p = argparse.ArgumentParser(prog="bioinfobook", add_help=False)
         p.add_argument("query", nargs="*")
         p.add_argument("--pane")
         p.add_argument("--no-anim", action="store_true")
