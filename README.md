@@ -99,8 +99,6 @@ The file format and house rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Wante
 | `BIOINFOBOOK_COLOR` | auto | `256` forces 256-colour mode, `truecolor` forces 24-bit |
 | `BIOINFOBOOK_REPO` | set in the script | the GitHub repo that `suggest` and `share` open issues on |
 
-The screenshots in `assets/` are made by `python3 scripts/screenshots.py` (needs tmux and Google Chrome), so they can be regenerated whenever the cheat sheets grow.
-
 ## License
 
 [MIT](LICENSE). Use it, fork it, share it.
